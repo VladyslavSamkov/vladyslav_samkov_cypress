@@ -1,0 +1,15 @@
+{
+  "name": "vladyslav_samkov_cypress",
+  "version": "1.0.0",
+  "description": "education project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cypress",
+    "demo"
+  ],
+  "author": "VladyslavSamkov",
+  "license": "MIT"
+}
