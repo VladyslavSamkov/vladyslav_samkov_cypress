@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9e5680cd-8407-4143-bec1-26afffb8c9b5" name="Changes" comment="wer">
+    <list default="true" id="9e5680cd-8407-4143-bec1-26afffb8c9b5" name="Changes" comment="Cypress installed.">
+      <change afterPath="$PROJECT_DIR$/cypress/e2e/sign_in.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cypress/selectors/sigh_in_selectors.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -40,7 +53,12 @@
       <option name="presentableId" value="Default" />
       <updated>1657014546393</updated>
       <workItem from="1657014548051" duration="12219000" />
-      <workItem from="1657057588900" duration="982000" />
+      <workItem from="1657057588900" duration="1299000" />
+      <workItem from="1658241158864" duration="331000" />
+      <workItem from="1658338125567" duration="848000" />
+      <workItem from="1658344326589" duration="3218000" />
+      <workItem from="1658387955253" duration="5904000" />
+      <workItem from="1658394402801" duration="2708000" />
     </task>
     <task id="LOCAL-00001" summary="wer">
       <created>1657057668779</created>
@@ -49,7 +67,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657057668779</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Cypress installed.">
+      <created>1657058884582</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1657058884582</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -60,7 +85,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="cypress_add" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -68,6 +105,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="wer" />
-    <option name="LAST_COMMIT_MESSAGE" value="wer" />
+    <MESSAGE value="Cypress installed." />
+    <option name="LAST_COMMIT_MESSAGE" value="Cypress installed." />
   </component>
 </project>
