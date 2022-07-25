@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9e5680cd-8407-4143-bec1-26afffb8c9b5" name="Changes" comment="Homework 1upd">
+    <list default="true" id="9e5680cd-8407-4143-bec1-26afffb8c9b5" name="Changes" comment="1. Added spaces inside of the name exported.&#10;2. Moved function to the same line describe.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cypress/e2e/sign_in.js" beforeDir="false" afterPath="$PROJECT_DIR$/cypress/e2e/sign_in.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cypress/e2e/sign_in.js" beforeDir="false" afterPath="$PROJECT_DIR$/cypress/e2e/sign_in_page.spec.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cypress/selectors/sigh_in_selectors.js" beforeDir="false" afterPath="$PROJECT_DIR$/cypress/selectors/sigh_in_selectors.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,7 +21,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="homework_2" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -45,6 +45,16 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration name="sign_in_page.spec.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/cypress/e2e/sign_in_page.spec.js" working-dir="$PROJECT_DIR$/cypress/e2e">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.sign_in_page.spec.js" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -62,7 +72,9 @@
       <workItem from="1658394402801" duration="4169000" />
       <workItem from="1658431808191" duration="620000" />
       <workItem from="1658665777985" duration="596000" />
-      <workItem from="1658735212478" duration="1187000" />
+      <workItem from="1658735212478" duration="4696000" />
+      <workItem from="1658749377285" duration="1437000" />
+      <workItem from="1658759500560" duration="4010000" />
     </task>
     <task id="LOCAL-00001" summary="wer">
       <created>1657057668779</created>
@@ -99,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658398532342</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="1. Added spaces inside of the name exported.&#10;2. Moved function to the same line describe.">
+      <created>1658736463009</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1658736463009</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,6 +152,7 @@
     <MESSAGE value="Cypress installed." />
     <MESSAGE value="Homework 1" />
     <MESSAGE value="Homework 1upd" />
-    <option name="LAST_COMMIT_MESSAGE" value="Homework 1upd" />
+    <MESSAGE value="1. Added spaces inside of the name exported.&#10;2. Moved function to the same line describe." />
+    <option name="LAST_COMMIT_MESSAGE" value="1. Added spaces inside of the name exported.&#10;2. Moved function to the same line describe." />
   </component>
 </project>

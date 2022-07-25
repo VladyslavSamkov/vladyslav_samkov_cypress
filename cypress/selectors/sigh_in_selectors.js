@@ -7,5 +7,5 @@ export const sigh_in_selectors = {
     remember_me_checkbox: '[name="remember"]',
     signin_btn:'[data-test="signin-submit"]',
     signup_link: '[data-test="signup"]',
-    license: '#root > div > main > div.MuiBox-root.MuiBox-root-60 > div > p > a'
+    license: '[href=\'https://cypress.io\']'
 }

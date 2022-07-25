@@ -1,7 +1,7 @@
 import { sigh_in_selectors as sigh_in_selectors } from "../selectors/sigh_in_selectors";
 
 describe('UI tests for sign in page', () => {
-        before('visiting sign in page', () => {
+        beforeEach('visiting sign in page', () => {
             cy.visit('/');
         })
 
@@ -34,14 +34,13 @@ describe('UI tests for sign in page', () => {
             cy.get(sigh_in_selectors.username_helper_text)
                 .should('be.visible')
                 .and('contain', 'Username is required')
-                .and('have.css', 'color', '#f44336');
+                .and('have.css', 'color', 'rgb(244, 67, 54)');
         })
 
         it('4.2 Error message not appears', () => {
-            cy.get(sigh_in_selectors.password_field).type('Hello World!');
+            cy.get(sigh_in_selectors.username_field).type('Hello World!');
             cy.get(sigh_in_selectors.password_field).click();
-            cy.get(sigh_in_selectors.username_helper_text)
-                .should('not.be.visible');
+            cy.get(sigh_in_selectors.username_helper_text).should('not.exist');
         })
 
         it('5.1 Remember me disabled by default', () => {
@@ -60,8 +59,9 @@ describe('UI tests for sign in page', () => {
 
         it('6.1 Should show disabled by default sign in btn', () => {
             cy.get(sigh_in_selectors.signin_btn)
+                .click()
                 .should('be.disabled');
-        })
+        })// Sign in btn enabled by default, but became disabled after getting error message
 
         it('6.2 Should be enabled when username and password filled', () => {
             cy.get(sigh_in_selectors.password_field).type('Hello World!');
@@ -75,15 +75,12 @@ describe('UI tests for sign in page', () => {
                 .should('be.visible')
                 .should('contain', 'Don\'t have an account? Sign Up')
                 .click();
-            cy.url().should('contain', '/sighup');
-            cy.go('back');
+            cy.url().should('contain', '/signup');
         })
 
         it('8. Should show Cypress copyright link that leads to \'https://www.cypress.io/\'', () => {
             cy.get(sigh_in_selectors.license)
                 .should('be.visible')
-                .click();
-            cy.url().should('contain', 'https://www.cypress.io');
-            cy.visit('/');
+                .and('have.attr','href','https://cypress.io')
         })
     })
