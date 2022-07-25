@@ -1,8 +1,6 @@
-import {sigh_in_selectors as sigh_in_selectors} from "../selectors/sigh_in_selectors";
+import { sigh_in_selectors as sigh_in_selectors } from "../selectors/sigh_in_selectors";
 
-describe('UI tests for sign in page',
-    () => {
-
+describe('UI tests for sign in page', () => {
         before('visiting sign in page', () => {
             cy.visit('/');
         })
@@ -23,12 +21,12 @@ describe('UI tests for sign in page',
 
         it('3.1 should show Username placeholder', () => {
             cy.get(sigh_in_selectors.username_lable)
-                .should('have.text', `Username`); // максимально в этом не уверен но хз как привильно
+                .should('have.text', `Username`);
         })
 
         it('3.2 should show Password placeholder', () => {
             cy.get(sigh_in_selectors.password_lable)
-                .should('have.text', `Password`); // максимально в этом не уверен но хз как привильно
+                .should('have.text', `Password`);
         })
 
         it('4.1 Error message for missed user name', () => {

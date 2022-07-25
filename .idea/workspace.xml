@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9e5680cd-8407-4143-bec1-26afffb8c9b5" name="Changes" comment="Homework 1upd" />
+    <list default="true" id="9e5680cd-8407-4143-bec1-26afffb8c9b5" name="Changes" comment="Homework 1upd">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cypress/e2e/sign_in.js" beforeDir="false" afterPath="$PROJECT_DIR$/cypress/e2e/sign_in.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cypress/selectors/sigh_in_selectors.js" beforeDir="false" afterPath="$PROJECT_DIR$/cypress/selectors/sigh_in_selectors.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,7 +59,10 @@
       <workItem from="1658338125567" duration="848000" />
       <workItem from="1658344326589" duration="3218000" />
       <workItem from="1658387955253" duration="5904000" />
-      <workItem from="1658394402801" duration="3862000" />
+      <workItem from="1658394402801" duration="4169000" />
+      <workItem from="1658431808191" duration="620000" />
+      <workItem from="1658665777985" duration="596000" />
+      <workItem from="1658735212478" duration="1187000" />
     </task>
     <task id="LOCAL-00001" summary="wer">
       <created>1657057668779</created>
@@ -85,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658398376132</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Homework 1upd">
+      <created>1658398532342</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1658398532342</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
