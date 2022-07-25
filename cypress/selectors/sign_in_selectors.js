@@ -1,4 +1,4 @@
-export const sigh_in_selectors = {
+export const sign_in_selectors = {
     username_field: '#username',
     username_lable: '#username-label',
     username_helper_text: '#username-helper-text',
