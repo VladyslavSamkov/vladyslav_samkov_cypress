@@ -24,7 +24,7 @@ describe('HW3, create,delete, display errors for bank accounts', () => {
         cy.get(home_page_selectors.ba_btn).click()
     })
 
-    beforeEach('Visiting bank account page', () => {
+    beforeEach('GraphQL querries', () => {
         cy.intercept("POST", '/graphql', (req) => {
             const { body } = req;
 
