@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9e5680cd-8407-4143-bec1-26afffb8c9b5" name="Changes" comment="Homework 1 2nd refactor">
-      <change afterPath="$PROJECT_DIR$/cypress/e2e/sign_up_page.spec.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cypress/selectors/home_page_selectors.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cypress/selectors/onboarding_selectors.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cypress/selectors/sign_up_selectors.js" afterDir="false" />
+    <list default="true" id="9e5680cd-8407-4143-bec1-26afffb8c9b5" name="Changes" comment="Homework 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,7 +75,9 @@
       <workItem from="1658735212478" duration="4696000" />
       <workItem from="1658749377285" duration="1437000" />
       <workItem from="1658759500560" duration="14314000" />
-      <workItem from="1658822681322" duration="4259000" />
+      <workItem from="1658822681322" duration="5200000" />
+      <workItem from="1658850512430" duration="291000" />
+      <workItem from="1658918244975" duration="622000" />
     </task>
     <task id="LOCAL-00001" summary="wer">
       <created>1657057668779</created>
@@ -137,7 +135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658767250657</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Homework 2">
+      <created>1658827321533</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1658827321533</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,6 +179,7 @@
     <MESSAGE value="1. Added spaces inside of the name exported.&#10;2. Moved function to the same line describe." />
     <MESSAGE value="Homework 1 refactor" />
     <MESSAGE value="Homework 1 2nd refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Homework 1 2nd refactor" />
+    <MESSAGE value="Homework 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Homework 2" />
   </component>
 </project>

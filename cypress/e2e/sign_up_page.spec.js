@@ -1,76 +1,148 @@
 import { sign_up_selectors as sign_up_selectors } from "../selectors/sign_up_selectors";
 import { sign_in_selectors as sign_in_selectors } from "../selectors/sign_in_selectors";
-import { home_page_selectors as home_page_selectors } from "../selectors/home_page_selectors";
-import { onboarding_selectors as onboarding_selectors } from "../selectors/onboarding_selectors";
+import { auth_helpers } from "../helpers/auth_helpers";
 
-describe('Sign up, login, logout checks', () => {
-    const newUserInfo = {
+describe('Sign up, login, logout, onboarding checks', () => {
+    const userInfo = {
         firstName: 'Elon',
         lastName: 'Mask',
-        username: sign_up_selectors.generateUserName(),
-        password: 'qwerty123',
-    }
-    const existingUserInfo = {
-        username: 'Messi10',
+        username: auth_helpers.generateUserName(),
         password: 'qwerty123',
     }
 
     it('1. should allow a visitor to sign-up', () => {
-        cy.visit('/signup');
-        cy.intercept("POST", "/users").as("signup");
-        cy.get(sign_up_selectors.firstName).type(newUserInfo.firstName);
-        cy.get(sign_up_selectors.lastName).type(newUserInfo.lastName);
-        cy.get(sign_up_selectors.userName).type(newUserInfo.username);
-        cy.get(sign_up_selectors.password).type(newUserInfo.password);
-        cy.get(sign_up_selectors.confirmPassword).type(newUserInfo.password);
-        cy.get(sign_up_selectors.sign_up_btn).should('be.enabled').click()
-        cy.wait("@signup").its('response.statusCode').should('equal',201);
-        cy.url().should('contain', '/signin')
+        cy.ui_signup(userInfo)
     })
 
     it('2. should allow a visitor to login for newly created account.',() => {
-        cy.visit('/');
-        cy.intercept("POST", "/login").as("login");
-        cy.get(sign_in_selectors.username_field).type(newUserInfo.username);
-        cy.get(sign_in_selectors.password_field).type(newUserInfo.password);
-        cy.get(sign_in_selectors.signin_btn).should('be.enabled').click();
-        cy.wait('@login').its('response.statusCode').should('equal',200);
-        cy.get(onboarding_selectors.get_started_popup).should('exist')
+        cy.ui_login(userInfo)
     })
 
     it('2.1 Onboarding process', ()=>{
-        cy.get(onboarding_selectors.get_started_popup).should('be.visible')
-        cy.get(onboarding_selectors.popup_title)
-            .should('have.text','Get Started with Real World App')
-        cy.get(onboarding_selectors.next_btn)
-            .should('be.visible')
-            .click()
-        cy.get(onboarding_selectors.BA_bankName).should('be.visible').type('BName')
-        cy.get(onboarding_selectors.BA_routingNumber).should('be.visible').type('123456789')
-        cy.get(onboarding_selectors.BA_accountNumber).should('be.visible').type('987654321')
-        cy.get(onboarding_selectors.BA_save_btn)
-            .should('be.visible')
-            .click()
-        cy.get(onboarding_selectors.popup_title).should('have.text','Finished')
-        cy.get(onboarding_selectors.next_btn)
-            .should('be.visible')
-            .click()
-        cy.get(onboarding_selectors.get_started_popup).should('not.exist')
-    })
-
-    it('2.2 Should allow a visitor to login for existing account.',() => {
-        cy.visit('/signin');
-        cy.intercept("POST", "/login").as("login");
-        cy.get(sign_in_selectors.username_field).type(existingUserInfo.username);
-        cy.get(sign_in_selectors.password_field).type(existingUserInfo.password);
-        cy.get(sign_in_selectors.signin_btn).should('be.enabled').click();
-        cy.wait('@login').its('response.statusCode').should('equal',200);
-        cy.get(onboarding_selectors.get_started_popup).should('not.exist')
+        cy.ui_onbording()
     })
 
     it('3 User should be able to logout',() => {
-        cy.intercept('POST', '/logout').as('logout')
-        cy.get(home_page_selectors.logout_btn).click()
-        cy.url().should('contain', 'signin')
+        cy.ui_logout()
     })
-})
+
+    it('4.1 Should display login error with invalid username',() => {
+        cy.visit('/')
+        cy.get(sign_in_selectors.username_field).type('InvalidName')
+        cy.get(sign_in_selectors.password_field).type(userInfo.password)
+        cy.get(sign_in_selectors.signin_btn).click()
+        cy.get(sign_in_selectors.signin_error)
+            .should('be.visible')
+            .and('have.text','Username or password is invalid')
+        cy.reload()
+
+    })
+
+    it('4.2 Should display login error with invalid password',() => {
+        cy.get(sign_in_selectors.username_field).type(userInfo.username)
+        cy.get(sign_in_selectors.password_field).type('1234566789')
+        cy.get(sign_in_selectors.signin_btn).click()
+        cy.get(sign_in_selectors.signin_error)
+            .should('be.visible')
+            .and('have.text','Username or password is invalid')
+        cy.reload()
+
+    })
+
+    it('4.3 Should display login error with both invalid password and usernmae',() => {
+        cy.get(sign_in_selectors.username_field).type('InvalidName')
+        cy.get(sign_in_selectors.password_field).type('1234566789')
+        cy.get(sign_in_selectors.signin_btn).click()
+        cy.get(sign_in_selectors.signin_error)
+            .should('be.visible')
+            .and('have.text','Username or password is invalid')
+        cy.reload()
+
+    })
+    it('4.4 Should display error in case password have less then 4 characters',() => {
+        cy.get(sign_in_selectors.password_field).click().blur()
+        cy.get(sign_in_selectors.password_field).type('1').blur()
+        cy.get(sign_in_selectors.password_char_error)
+            .should('be.visible')
+            .and('have.text','Password must contain at least 4 characters')
+        cy.get(sign_in_selectors.password_field).type('2').blur()
+        cy.get(sign_in_selectors.password_char_error)
+            .should('be.visible')
+            .and('have.text','Password must contain at least 4 characters')
+        cy.get(sign_in_selectors.password_field).type('3').blur()
+        cy.get(sign_in_selectors.password_char_error)
+            .should('be.visible')
+            .and('have.text','Password must contain at least 4 characters')
+        cy.get(sign_in_selectors.password_field).type('4').blur()
+        cy.get(sign_in_selectors.password_char_error).should('not.exist')
+        cy.get(sign_in_selectors.password_field).type('5').blur()
+        cy.get(sign_in_selectors.password_char_error).should('not.exist')
+        cy.reload()
+    })
+
+    it('5.1 Should appear error for not entered first name', () => {
+        cy.visit('/signup')
+        cy.get(sign_up_selectors.firstName).click().blur()
+        cy.get(sign_up_selectors.firstname_error)
+            .should('be.visible')
+            .and('have.text','First Name is required')
+        cy.get(sign_up_selectors.firstName).type('AnyName')
+        cy.get(sign_up_selectors.firstname_error).should('not.exist')
+
+    })
+
+    it('5.2 Should appear error for not entered last name', () => {
+        cy.get(sign_up_selectors.lastName).click().blur()
+        cy.get(sign_up_selectors.lastName_error)
+            .should('be.visible')
+            .and('have.text','Last Name is required')
+    })
+
+    it('5.3 Should appear error for not entered Username name', () => {
+        cy.get(sign_up_selectors.userName).click().blur()
+        cy.get(sign_up_selectors.userName_error)
+            .should('be.visible')
+            .and('have.text','Username is required')
+    })
+
+
+    it('5.4 Should appear error for not entered password', () => {
+        cy.get(sign_up_selectors.password).click().blur()
+        cy.get(sign_up_selectors.password_error)
+            .should('be.visible')
+            .and('have.text','Enter your password')
+    })
+
+    it('5.5 Should display error in case password have less then 4 characters', () => {
+        cy.get(sign_up_selectors.password).click().blur()
+        cy.get(sign_up_selectors.password).type('1').blur()
+        cy.get(sign_up_selectors.password_error)
+            .should('be.visible')
+            .and('have.text','Password must contain at least 4 characters')
+        cy.get(sign_up_selectors.password).type('2').blur()
+        cy.get(sign_up_selectors.password_error)
+            .should('be.visible')
+            .and('have.text','Password must contain at least 4 characters')
+        cy.get(sign_up_selectors.password).type('3').blur()
+        cy.get(sign_up_selectors.password_error)
+            .should('be.visible')
+            .and('have.text','Password must contain at least 4 characters')
+        cy.get(sign_up_selectors.password).type('4').blur()
+        cy.get(sign_up_selectors.password_error).should('not.exist')
+        cy.get(sign_up_selectors.password).type('5').blur()
+        cy.get(sign_up_selectors.password_error).should('not.exist')
+    })
+
+    it('5.6 Should appear error for not matched and missed password', () => {
+        cy.get(sign_up_selectors.confirmPassword).click().blur()
+        cy.get(sign_up_selectors.confirmPassword_error)
+            .should('be.visible')
+            .and('have.text','Confirm your password')
+        cy.get(sign_up_selectors.confirmPassword).type('WrongPassword')
+        cy.get(sign_up_selectors.confirmPassword_error)
+            .should('be.visible')
+            .and('have.text','Password does not match')
+    })
+
+    })
+
