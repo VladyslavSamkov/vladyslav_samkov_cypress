@@ -15,16 +15,18 @@ export const transaction_selectors = {
     transaction_list: '[data-test="transaction-list"]',
     accept_request_btn: '[data-test*="transaction-accept-request"]',
     search_input: '[data-test="user-list-search-input"]',
-    createPaidTransaction(paymentData) {
-        cy.get(transaction_selectors.user_devon_backer).should('be.visible').click()
+    new_transaction_btn: '[data-test="nav-top-new-transaction"]',
+    createPaidTransaction(paymentData, userInfo) {
+        cy.get(transaction_selectors.new_transaction_btn).click();
+        cy.get(transaction_selectors.user_list_item).contains(`${userInfo.firstName} ${userInfo.lastName}`).click()
         cy.get(transaction_selectors.add_amount_field).should('be.visible').type(paymentData.amount),
         cy.get(transaction_selectors.add_a_note_field).should('be.visible').type(paymentData.note),
         cy.get(transaction_selectors.pay_btn).should('be.visible').click()
         cy.wait("@createTransaction").its("response").then( (response) => {
             expect(response.statusCode).to.eq(200)    
-            expect(response.body.transaction.amount).to.eq(paymentData.amount * 100)
-            expect(response.body.transaction.description).to.eq(paymentData.note)
-            expect(response.body.transaction.status).to.eq('complete')
+            expect(response.body.transaction.amount).to.eq(paymentData.amount * 100);
+            expect(response.body.transaction.description).to.eq(paymentData.note);
+            expect(response.body.transaction.status).to.eq('complete');
             })
         cy.wait("@checkAuth")
         cy.get(transaction_selectors.success_alert)
@@ -33,6 +35,7 @@ export const transaction_selectors = {
         cy.get(transaction_selectors.success_message).contains('Paid')
     },
     createRequestTransaction(paymentData) {
+        cy.get(transaction_selectors.new_transaction_btn).click();
         cy.get(transaction_selectors.user_devon_backer).should('be.visible').click()
         cy.get(transaction_selectors.add_amount_field).should('be.visible').type(paymentData.amount),
         cy.get(transaction_selectors.add_a_note_field).should('be.visible').type(paymentData.note),
