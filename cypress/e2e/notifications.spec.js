@@ -2,7 +2,7 @@ import { notifications_selectors } from "../selectors/notifications_selectors"
 import { transaction_selectors } from "../selectors/transaction_selectors"
 
 
-describe('homework 26.7', () => {
+describe('homework №5 02.05', () => {
     const userA = {
         username: 'Tavares_Barrows',
         password: 's3cret',
