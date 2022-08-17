@@ -37,14 +37,11 @@ describe('Homework 4.08', () => {
     })
 
     beforeEach('Log in + incercept', () => {
-        cy.intercept("GET", "/notifications*").as("getNotifications");
         cy.intercept("POST", "/transactions").as("createTransaction");
-        cy.intercept("PATCH", "/notifications/*").as("updateNotification");
-        cy.intercept("POST", "/comments/*").as("postComment");2
+        cy.intercept("POST", "/comments/*").as("postComment");
         cy.intercept("GET", "/users").as("getUsers");
         cy.intercept("GET", "/checkAuth").as("checkAuth");
         cy.intercept("GET", "/transactions").as("listTransaction");
-        cy.intercept("GET", "/transactions/*").as("getTransaction");
         cy.ui_login(userA);
         
     })
@@ -95,9 +92,10 @@ describe('Homework 4.08', () => {
             .first()
             .click({force: true});
         cy.get(transaction_selectors.accept_request_btn).should('be.visible').click()
-        cy.wait("@getTransaction")
-        cy.wait("@getTransaction")
-        cy.wait("@getTransaction")
+        cy.intercept("GET", "/transactions/*",req => {
+            delete req.headers['if-none-match']
+        }).as("getTransaction");
+        cy.reload()
         cy.wait("@getTransaction").its("response").then( (response) => {
             expect(response.statusCode).to.eq(200) 
             expect(response.body.transaction.requestStatus).to.eq('accepted');
@@ -115,9 +113,10 @@ describe('Homework 4.08', () => {
             .first()
             .click({force: true});
         cy.get(transaction_selectors.reject_request_btn).should('be.visible').click()
-        cy.wait("@getTransaction")
-        cy.wait("@getTransaction")
-        cy.wait("@getTransaction")
+        cy.intercept("GET", "/transactions/*",req => {
+            delete req.headers['if-none-match']
+          }).as("getTransaction");
+        cy.reload()
         cy.wait("@getTransaction").its("response").then( (response) => {
             expect(response.statusCode).to.eq(200) 
             expect(response.body.transaction.requestStatus).to.eq('rejected');
