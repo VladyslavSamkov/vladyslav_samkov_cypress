@@ -1,14 +1,24 @@
 import { sign_up_selectors as sign_up_selectors } from "../selectors/sign_up_selectors";
 import { sign_in_selectors as sign_in_selectors } from "../selectors/sign_in_selectors";
-import { auth_helpers } from "../helpers/auth_helpers";
+import { helper_functions } from "../helpers/helper_functions";
 
 describe('UI tests for sign in, sign up pages and onboarding process', () => {
     const userInfo = {
         firstName: 'Elon',
         lastName: 'Mask',
-        username: auth_helpers.generateUserName(),
+        username: helper_functions.generateUserName(),
         password: 'qwerty123',
     }
+
+    /*const userInfo = {
+        username: 'Tavares_Barrows',
+        password: 's3cret',
+        firstName: "Arely",
+        lastName: "Kertzmann",
+        email: "Aniya_Powlowski36@hotmail.com",
+        phoneNumber: "537-041-4355",
+    }*/
+
     beforeEach('visiting sign in page', () => {
         cy.visit('/');
     })
@@ -86,7 +96,7 @@ describe('UI tests for sign in, sign up pages and onboarding process', () => {
     })
     
     it('12. Should allow user to logout',() => {
-        cy.ui_login(userInfo)
+        cy.api_login(userInfo)
         cy.ui_logout()
     })
     

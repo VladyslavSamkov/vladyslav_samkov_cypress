@@ -1,12 +1,12 @@
 import { bank_accounts_selectors } from "../selectors/bank_accounts_selectors";
 import { home_page_selectors } from "../selectors/home_page_selectors";
-import { auth_helpers } from  "../helpers/auth_helpers"
+import { helper_functions } from "../helpers/helper_functions";
 
 describe('UI checks for bank accounts; Bank account create/delete actions', () => {
     const userInfo = {
         firstName: 'Lionel',
         lastName: 'Messi',
-        username: auth_helpers.generateUserName(),
+        username: helper_functions.generateUserName(),
         password: 'qwerty123',
     };
 
@@ -16,15 +16,15 @@ describe('UI checks for bank accounts; Bank account create/delete actions', () =
         account_number: '987654321'
     }
     
-    before('Generate new user for tests', () => {
-        cy.ui_signup(userInfo);
-        cy.ui_login(userInfo);
+      before('Generate new user for tests', () => {
+        cy.api_signup(userInfo);
+        cy.api_login(userInfo);
         cy.ui_onbording();
-        cy.ui_logout();
+        cy.api_logout();
     })
 
     beforeEach('GraphQL querries + login and procced to bank accouts page', () => {
-        cy.ui_login(userInfo);
+        cy.api_login(userInfo);
         cy.get(home_page_selectors.ba_btn).click()
         cy.intercept("POST", '/graphql', (req) => {
             const { body } = req;
