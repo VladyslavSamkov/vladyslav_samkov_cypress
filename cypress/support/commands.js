@@ -3,6 +3,8 @@ import { sign_in_selectors as sign_in_selectors } from "../selectors/sign_in_sel
 import { home_page_selectors as home_page_selectors } from "../selectors/home_page_selectors";
 import { onboarding_selectors as onboarding_selectors } from "../selectors/onboarding_selectors";
 
+const envUrl= 'http://localhost:3001'
+
 Cypress.Commands.add('ui_login',(userInfo) => {
     cy.intercept("POST", "/login").as("login");
     cy.visit('/signin');
@@ -51,3 +53,35 @@ Cypress.Commands.add('ui_logout', () => {
     cy.get(home_page_selectors.logout_btn).click()
     cy.url().should('contain', 'signin')
     })
+
+Cypress.Commands.add("api_login", ( userInfo ) => {
+    cy.visit("/signin", { log: false });
+    cy.window({ log: false }).then( (win) => win.authService.send("LOGIN", { 
+        username: userInfo.username,
+        type: "LOGIN",
+        password: userInfo.password
+     }));
+    });
+
+Cypress.Commands.add("api_signup", ( userInfo ) => {
+    cy.request("POST", `${envUrl}/users`, {
+        firstName: "Harry",
+        lastName: "Kane",
+        username: userInfo.username,
+        password: userInfo.password,
+        confirmPassword: userInfo.password,
+    });
+    });
+      
+Cypress.Commands.add("api_logout", () => {
+    cy.window({ log: false }).then( (win) => win.authService.send("LOGOUT", { 
+     }))
+    cy.wait(1000)
+    });
+
+Cypress.Commands.add("api_switchUser", ( userInfo ) => {
+    cy.api_logout();
+    cy.api_login(userInfo);
+    });
+
+      

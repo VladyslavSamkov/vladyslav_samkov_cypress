@@ -29,7 +29,7 @@ describe('Homework 9.08', () => {
         cy.intercept("GET", "/checkAuth",req => {
             delete req.headers['if-none-match']
           }).as("userProfile");
-        cy.ui_login(userA);
+        cy.api_login(userA);
         cy.get(user_settings_selectors.my_account_btn).click()
         cy.url().should("contain", "/user/settings");
     })
@@ -121,7 +121,7 @@ describe('Homework 9.08', () => {
         cy.get(user_settings_selectors.email_input).clear().type(userC.email);
         cy.get(user_settings_selectors.save_btn).click()
         cy.wait("@userProfile").its('response').then((response) => {
-            expect(response.body.user.lastName).to.eq(userC.email);
+            expect(response.body.user.email).to.eq(userC.email);
         })
         cy.reload()
         cy.get(user_settings_selectors.email_input).should('have.value',(userC.email));

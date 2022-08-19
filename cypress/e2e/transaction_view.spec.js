@@ -31,9 +31,9 @@ describe('Homework 4.08', () => {
     before('Create test trasaction', () => {
         cy.intercept("POST", "/transactions").as("createTransaction");
         cy.intercept("GET", "/checkAuth").as("checkAuth");
-        cy.ui_login(userA);
+        cy.api_login(userA);
         transaction_selectors.createPaidTransaction(paymentData, userB)
-        cy.ui_logout()
+        cy.api_logout()
     })
 
     beforeEach('Log in + incercept', () => {
@@ -42,7 +42,7 @@ describe('Homework 4.08', () => {
         cy.intercept("GET", "/users").as("getUsers");
         cy.intercept("GET", "/checkAuth").as("checkAuth");
         cy.intercept("GET", "/transactions").as("listTransaction");
-        cy.ui_login(userA);
+        cy.api_login(userA);
         
     })
 
@@ -83,8 +83,7 @@ describe('Homework 4.08', () => {
 
     it('4. User should be able to accept a transaction request', () => {
         transaction_selectors.createRequestTransaction(paymentData, userB)
-        cy.ui_logout()
-        cy.ui_login(userB)
+        cy.api_switchUser(userB)
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait('@listTransaction')
         cy.get(transaction_selectors.transaction_list)
@@ -104,8 +103,7 @@ describe('Homework 4.08', () => {
 
     it('5. User should be able to reject a transaction request', () => {
         transaction_selectors.createRequestTransaction(paymentData, userB)
-        cy.ui_logout()
-        cy.ui_login(userB)
+        cy.api_switchUser(userB)
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait('@listTransaction')
         cy.get(transaction_selectors.transaction_list)
@@ -125,8 +123,7 @@ describe('Homework 4.08', () => {
 
     it('6. Accept/reject buttons shouldnt exist on completed request', () => {
         transaction_selectors.createRequestTransaction(paymentData, userB)
-        cy.ui_logout()
-        cy.ui_login(userB)
+        cy.api_switchUser(userB)
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait('@listTransaction')
         cy.get(transaction_selectors.transaction_list)

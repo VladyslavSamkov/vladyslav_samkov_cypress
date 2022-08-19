@@ -46,13 +46,12 @@ describe('homework №5 02.05', () => {
         cy.intercept("GET", "/users").as("getUsers");
         cy.intercept("GET", "/checkAuth").as("checkAuth");
         cy.intercept("GET", "/transactions").as("listTransaction");
-        cy.ui_login(userA);
+        cy.api_login(userA);
     })
 
     it('1. When user A likes a transaction of user B, user B should get notification that user A liked transaction', () => {
         transaction_selectors.createPaidTransaction(paymentData, userB);
-        cy.ui_logout();
-        cy.ui_login(userB);
+        cy.api_switchUser(userB)
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait("@listTransaction")
         cy.get(transaction_selectors.transaction_list)
@@ -61,8 +60,7 @@ describe('homework №5 02.05', () => {
             .click({force: true});
         cy.get(notifications_selectors.like_btn).should('be.visible').click()
         cy.get(notifications_selectors.like_count).should('be.visible').and('have.text','1 ')
-        cy.ui_logout()
-        cy.ui_login(userA)
+        cy.api_switchUser(userA)
         cy.get(notifications_selectors.notifications_btn).click()
         cy.wait('@getNotifications')
         cy.get(notifications_selectors.notifications_list)
@@ -74,16 +72,14 @@ describe('homework №5 02.05', () => {
 
     it('2. When user C likes a transaction between user A and user B, user A and user B should get notifications that user C liked transaction', () => {
         transaction_selectors.createPaidTransaction(paymentData, userB);
-        cy.ui_logout();
-        cy.ui_login(userC);
+        cy.api_switchUser(userC)
         cy.get(transaction_selectors.transaction_list)
             .contains(`${userA.firstName} ${userA.lastName} paid ${userB.firstName} ${userB.lastName}`)
             .first()
             .click({force: true});
         cy.get(notifications_selectors.like_btn).should('be.visible').click()
         cy.get(notifications_selectors.like_count).should('be.visible').and('have.text','1 ')
-        cy.ui_logout()
-        cy.ui_login(userA)
+        cy.api_switchUser(userA)
         cy.get(notifications_selectors.notifications_btn).click()
         cy.wait('@getNotifications')
         cy.get(notifications_selectors.notifications_list)
@@ -91,8 +87,7 @@ describe('homework №5 02.05', () => {
             .children()
             .first()
             .should('have.text',`${userC.firstName} ${userC.lastName} liked a transaction.Dismiss`)
-        cy.ui_logout();
-        cy.ui_login(userB)
+        cy.api_switchUser(userB)
         cy.get(notifications_selectors.notifications_btn).click()
         cy.wait('@getNotifications')
         cy.get(notifications_selectors.notifications_list)
@@ -104,8 +99,7 @@ describe('homework №5 02.05', () => {
 
     it('3. When user A comments on a transaction of user B, user B should get notification that User A commented on their transaction', () => {
         transaction_selectors.createPaidTransaction(paymentData, userB);
-        cy.ui_logout();
-        cy.ui_login(userB);
+        cy.api_switchUser(userB)
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait("@listTransaction")
         cy.get(transaction_selectors.transaction_list)
@@ -117,8 +111,7 @@ describe('homework №5 02.05', () => {
         cy.get(notifications_selectors.comment_list)
             .children()
             .should('have.text',commentInput)
-        cy.ui_logout();
-        cy.ui_login(userA)
+        cy.api_switchUser(userA)
         cy.get(notifications_selectors.notifications_btn).click()
         cy.wait('@getNotifications')
         cy.get(notifications_selectors.notifications_list)
@@ -130,8 +123,7 @@ describe('homework №5 02.05', () => {
 
     it('4. When user C comments on a transaction between user A and user B, user A and B should get notifications that user C commented on their transaction', () => {
         transaction_selectors.createPaidTransaction(paymentData, userB);
-        cy.ui_logout();
-        cy.ui_login(userC);
+        cy.api_switchUser(userC)
         cy.get(transaction_selectors.transaction_list)
             .contains(`${userA.firstName} ${userA.lastName} paid ${userB.firstName} ${userB.lastName}`)
             .first()
@@ -141,8 +133,7 @@ describe('homework №5 02.05', () => {
         cy.get(notifications_selectors.comment_list)
             .children()
             .should('have.text',commentInput)
-        cy.ui_logout();
-        cy.ui_login(userA)
+        cy.api_switchUser(userA)
         cy.get(notifications_selectors.notifications_btn).click()
         cy.wait('@getNotifications')
         cy.get(notifications_selectors.notifications_list)
@@ -150,8 +141,7 @@ describe('homework №5 02.05', () => {
             .children()
             .first()
             .should('have.text',`${userC.firstName} ${userC.lastName} commented on a transaction.Dismiss`)
-        cy.ui_logout()
-        cy.ui_login(userB)
+        cy.api_switchUser(userB)
         cy.get(notifications_selectors.notifications_btn).click()
         cy.wait('@getNotifications')
         cy.get(notifications_selectors.notifications_list)
@@ -163,8 +153,7 @@ describe('homework №5 02.05', () => {
 
     it('5. When user A sends a payment to user B, user B should be notified of payment', () => {
         transaction_selectors.createPaidTransaction(paymentData, userB);
-        cy.ui_logout();
-        cy.ui_login(userB);
+        cy.api_switchUser(userB)
         cy.get(notifications_selectors.notifications_btn).click()
         cy.wait('@getNotifications')
         cy.get(notifications_selectors.notifications_list)
@@ -176,8 +165,7 @@ describe('homework №5 02.05', () => {
 
     it('6. When user A sends a payment request to user C, user C should be notified of request from user A', () => {
         transaction_selectors.createRequestTransaction(paymentData, userC);
-        cy.ui_logout();
-        cy.ui_login(userB);
+        cy.api_switchUser(userC)
         cy.get(notifications_selectors.notifications_btn).click()
         cy.wait('@getNotifications')
         cy.get(notifications_selectors.notifications_list)
