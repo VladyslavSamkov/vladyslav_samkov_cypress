@@ -10,15 +10,6 @@ describe('UI tests for sign in, sign up pages and onboarding process', () => {
         password: 'qwerty123',
     }
 
-    /*const userInfo = {
-        username: 'Tavares_Barrows',
-        password: 's3cret',
-        firstName: "Arely",
-        lastName: "Kertzmann",
-        email: "Aniya_Powlowski36@hotmail.com",
-        phoneNumber: "537-041-4355",
-    }*/
-
     beforeEach('visiting sign in page', () => {
         cy.visit('/');
     })
