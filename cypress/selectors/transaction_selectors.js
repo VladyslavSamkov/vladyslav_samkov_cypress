@@ -20,7 +20,7 @@ export const transaction_selectors = {
     transaction_tabs: '[data-test="nav-transaction-tabs"]',
     createPaidTransaction(paymentData, receiverUserInfo) {
         cy.get(transaction_selectors.new_transaction_btn).click();
-        cy.get(transaction_selectors.user_list_item).contains(`${receiverUserInfo.firstName} ${receiverUserInfo.lastName}`).click()
+        cy.get(transaction_selectors.user_list_item).contains(`${receiverUserInfo.firstName} ${receiverUserInfo.lastName}`).click({force: true})
         cy.get(transaction_selectors.add_amount_field).should('be.visible').type(paymentData.amount),
         cy.get(transaction_selectors.add_a_note_field).should('be.visible').type(paymentData.note),
         cy.get(transaction_selectors.pay_btn).should('be.visible').click()

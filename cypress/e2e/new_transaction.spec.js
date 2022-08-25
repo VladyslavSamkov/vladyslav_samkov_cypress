@@ -42,17 +42,17 @@ describe('homework 26.7', () => {
         cy.intercept("GET", "/transactions/*").as("updateTransaction");
         cy.intercept("GET", "/transactions").as("listTransaction")
         cy.ui_login(userInfo);
-        cy.get(home_page_selectors.new_transaction_btn).click();
+        cy.get(transaction_selectors.new_transaction_btn).click();
         cy.wait("@getUsers");
 
     })
 
     it('1. Navigates to the new transaction form, selects a user and submits a transaction payment', () => {
-        transaction_selectors.createPaidTransaction(paymentData)
+        transaction_selectors.createPaidTransaction(paymentData, receiverUserInfo)
     })
 
     it('2. Navigates to the new transaction form, selects a user and submits a transaction request', () => {
-        transaction_selectors.createRequestTransaction(paymentData)
+        transaction_selectors.createRequestTransaction(paymentData, receiverUserInfo)
     })
     
     it('3. Displays new transaction errors', () => {
@@ -87,9 +87,9 @@ describe('homework 26.7', () => {
             x = x.replace('.', '')
             payerStartBalance = x;
         });
-        cy.get(home_page_selectors.new_transaction_btn).click();
+        cy.get(transaction_selectors.new_transaction_btn).click();
         cy.wait("@getUsers");
-        transaction_selectors.createPaidTransaction(paymentData);
+        transaction_selectors.createPaidTransaction(paymentData, receiverUserInfo);
         cy.get(transaction_selectors.user_balance).invoke("text").then((x) => {
             x = x.replace(',', '');
             x = x.replace('$', '');
@@ -116,7 +116,7 @@ describe('homework 26.7', () => {
             x = x.replace('.', '');
             payerStartBalance = x;     
         });
-        cy.get(home_page_selectors.new_transaction_btn).click();
+        cy.get(transaction_selectors.new_transaction_btn).click();
         transaction_selectors.createRequestTransaction(paymentData)
         cy.ui_logout();
         cy.ui_login(receiverUserInfo);
