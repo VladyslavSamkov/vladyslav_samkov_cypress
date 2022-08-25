@@ -2,7 +2,7 @@ import { bank_accounts_selectors } from "../selectors/bank_accounts_selectors";
 import { home_page_selectors } from "../selectors/home_page_selectors";
 import { auth_helpers } from  "../helpers/auth_helpers"
 
-describe('HW3, create,delete, display errors for bank accounts', () => {
+describe('UI checks for bank accounts; Bank account create/delete actions', () => {
     const userInfo = {
         firstName: 'Lionel',
         lastName: 'Messi',
@@ -16,15 +16,16 @@ describe('HW3, create,delete, display errors for bank accounts', () => {
         account_number: '987654321'
     }
     
-    before('Visiting bank account page on newly added user', () => {
-        cy.reload()
+    before('Generate new user for tests', () => {
         cy.ui_signup(userInfo);
         cy.ui_login(userInfo);
         cy.ui_onbording();
-        cy.get(home_page_selectors.ba_btn).click()
+        cy.ui_logout();
     })
 
-    beforeEach('GraphQL querries', () => {
+    beforeEach('GraphQL querries + login and procced to bank accouts page', () => {
+        cy.ui_login(userInfo);
+        cy.get(home_page_selectors.ba_btn).click()
         cy.intercept("POST", '/graphql', (req) => {
             const { body } = req;
 
@@ -41,7 +42,8 @@ describe('HW3, create,delete, display errors for bank accounts', () => {
             }
         })
     })
-    it('1. User should be able to create new BA', () => {
+    
+    it('1. User should be able to create a new BA', () => {
         cy.get(bank_accounts_selectors.ba_create_btn).should('be.visible').click()
         cy.get(bank_accounts_selectors.create_ba_form).should('be.visible')
         cy.get(bank_accounts_selectors.bank_name_input).should('be.visible').type(BAinfo.bank_name)
@@ -54,7 +56,7 @@ describe('HW3, create,delete, display errors for bank accounts', () => {
         cy.get(bank_accounts_selectors.ba_list).should("contain", BAinfo.bank_name);
     })
 
-    it('2.1 Check that for Bank name field , at least 5 characters error appear', () => {
+    it('2. Should display "Must contain at least 5 characters" for the "Bank name" field', () => {
         cy.get(bank_accounts_selectors.ba_create_btn).should('be.visible').click()
         cy.get(bank_accounts_selectors.ba_name_error).should('not.exist')
         cy.get(bank_accounts_selectors.bank_name_input).should('be.visible').type('1')
@@ -79,14 +81,16 @@ describe('HW3, create,delete, display errors for bank accounts', () => {
         cy.get(bank_accounts_selectors.ba_name_error).should('not.exist')
     })
 
-    it('2.2 Check that for bank name, enter a bank name error apppear', () => {
+    it('3. Should display "Enter a bank name" for the "Bank name" field', () => {
+        cy.get(bank_accounts_selectors.ba_create_btn).should('be.visible').click()
         cy.get(bank_accounts_selectors.bank_name_input).clear().blur()
         cy.get(bank_accounts_selectors.ba_name_error)
             .should('be.visible')
             .and('have.text','Enter a bank name')
     })
 
-     it('2.3 Check that for routing number field error message appear when number lenght !=9', () =>{
+     it('4. Should display "Must contain a valid routing number" for the "Routing number" field', () =>{
+        cy.get(bank_accounts_selectors.ba_create_btn).should('be.visible').click()
         cy.get(bank_accounts_selectors.routingNumber_error).should('not.exist')
         cy.get(bank_accounts_selectors.routing_number_input).type('1')
         cy.get(bank_accounts_selectors.routingNumber_error)
@@ -109,14 +113,16 @@ describe('HW3, create,delete, display errors for bank accounts', () => {
             .and('have.text','Must contain a valid routing number')
     }) 
 
-    it('2.4 Check that for routing number error appear when number are empty', () =>{
+    it('5. Should display "Enter a valid bank routing number" for the "Routing number" field', () =>{
+        cy.get(bank_accounts_selectors.ba_create_btn).should('be.visible').click()
         cy.get(bank_accounts_selectors.routing_number_input).clear().blur()
         cy.get(bank_accounts_selectors.routingNumber_error)
             .should('be.visible')
             .and('have.text','Enter a valid bank routing number')
     })
 
-    it('2.5 Check that for account number field error message appear in case number lenght < 9 and > 12', () =>{
+    it('6. Should display "Must contain at least 9 digits" for the "Account number" field', () =>{
+        cy.get(bank_accounts_selectors.ba_create_btn).should('be.visible').click()
         cy.get(bank_accounts_selectors.accountNumber_error).should('not.exist')
         cy.get(bank_accounts_selectors.account_number_input).type('1')
         cy.get(bank_accounts_selectors.accountNumber_error)
@@ -142,7 +148,8 @@ describe('HW3, create,delete, display errors for bank accounts', () => {
             .and('have.text','Must contain no more than 12 digits')
     }) 
 
-    it('2.6 Check that for account number error appear when number are empty', () =>{
+    it('7. Should display "Enter a valid bank account number" for the "Account number" field', () =>{
+        cy.get(bank_accounts_selectors.ba_create_btn).should('be.visible').click()
         cy.get(bank_accounts_selectors.account_number_input).clear().blur()
         cy.get(bank_accounts_selectors.accountNumber_error)
             .should('be.visible')
@@ -150,14 +157,11 @@ describe('HW3, create,delete, display errors for bank accounts', () => {
     })
 
 
-    it('3. User should be able to delete BA', () => {
-        cy.go('back')
+    it('8. User should be able to delete BA', () => {
         cy.get(bank_accounts_selectors.ba_delete_btn).should('be.visible').last().click();
         cy.wait("@gqlDeleteBankAccountMutation")
             .its("response.body.data.deleteBankAccount")
             .should("equal", true);
-        //cy.wait("@gqlListBankAccountQuery").its('response.body.data.listBankAccount[1].isDeleted').should('have.text','true')
-        //will fail due to list of bank accounts falling down after delete
+        cy.get(bank_accounts_selectors.ba_list).children().contains("Deleted");
     })
-
 })
