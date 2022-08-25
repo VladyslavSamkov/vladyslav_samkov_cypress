@@ -1,9 +1,9 @@
 export const bank_accounts_selectors = {
     ba_create_btn: '[data-test="bankaccount-new"]',
     ba_delete_btn: '[data-test="bankaccount-delete"]',
-    bank_name_input: '#bankaccount-bankName-input',
-    routing_number_input: '#bankaccount-routingNumber-input',
-    account_number_input: '#bankaccount-accountNumber-input',
+    bankName_input: '#bankaccount-bankName-input',
+    routingNumber_input: '#bankaccount-routingNumber-input',
+    accountNumber_input: '#bankaccount-accountNumber-input',
     create_ba_form: '[data-test="bankaccount-form"]',
     ba_save_btn: '[data-test="bankaccount-submit"]',
     ba_list: '[data-test="bankaccount-list"]',
