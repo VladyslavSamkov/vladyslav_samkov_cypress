@@ -36,9 +36,9 @@ export const transaction_selectors = {
             .and('have.text','Transaction Submitted!')
         cy.get(transaction_selectors.success_message).contains('Paid')
     },
-    createRequestTransaction(paymentData) {
+    createRequestTransaction(paymentData, receiverUserInfo) {
         cy.get(transaction_selectors.new_transaction_btn).click();
-        cy.get(transaction_selectors.user_devon_backer).should('be.visible').click()
+        cy.get(transaction_selectors.user_list_item).contains(`${receiverUserInfo.firstName} ${receiverUserInfo.lastName}`).click({force: true})
         cy.get(transaction_selectors.add_amount_field).should('be.visible').type(paymentData.amount),
         cy.get(transaction_selectors.add_a_note_field).should('be.visible').type(paymentData.note),
         cy.get(transaction_selectors.request_btn).should('be.visible').click()

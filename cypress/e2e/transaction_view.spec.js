@@ -1,25 +1,9 @@
 import { notifications_selectors } from "../selectors/notifications_selectors"
 import { transaction_selectors } from "../selectors/transaction_selectors"
+import users from '../fixtures/users.json'
 
 
 describe('Homework 4.08', () => {
-    const userA = {
-        username: 'Tavares_Barrows',
-        password: 's3cret',
-        firstName: "Arely",
-        lastName: "Kertzmann",
-        email: "Aniya_Powlowski36@hotmail.com",
-        phoneNumber: "537-041-4355",
-    }
-
-    const userB = {
-        username: 'Jessyca.Kuhic',
-        password: 's3cret',
-        firstName: "Devon",
-        lastName: "Becker",
-        email: "Jordy37@yahoo.com",
-        phoneNumber: "277-189-3402",
-    }
 
     const paymentData = {
         amount: 100,
@@ -31,9 +15,9 @@ describe('Homework 4.08', () => {
     before('Create test trasaction', () => {
         cy.intercept("POST", "/transactions").as("createTransaction");
         cy.intercept("GET", "/checkAuth").as("checkAuth");
-        cy.ui_login(userA);
-        transaction_selectors.createPaidTransaction(paymentData, userB)
-        cy.ui_logout()
+        cy.api_login(users.userA);
+        transaction_selectors.createPaidTransaction(paymentData, users.userB)
+        cy.api_logout()
     })
 
     beforeEach('Log in + incercept', () => {
@@ -42,7 +26,7 @@ describe('Homework 4.08', () => {
         cy.intercept("GET", "/users").as("getUsers");
         cy.intercept("GET", "/checkAuth").as("checkAuth");
         cy.intercept("GET", "/transactions").as("listTransaction");
-        cy.ui_login(userA);
+        cy.api_login(users.userA);
         
     })
 
@@ -50,7 +34,7 @@ describe('Homework 4.08', () => {
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait('@listTransaction')
         cy.get(transaction_selectors.transaction_list)
-            .contains(`${userA.firstName} ${userA.lastName} paid ${userB.firstName} ${userB.lastName}`)
+            .contains(`${users.userA.firstName} ${users.userA.lastName} paid ${users.userB.firstName} ${users.userB.lastName}`)
             .first()
             .click({force: true});
         cy.get(transaction_selectors.transaction_tabs).should('not.exist')
@@ -60,7 +44,7 @@ describe('Homework 4.08', () => {
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait('@listTransaction')
         cy.get(transaction_selectors.transaction_list)
-            .contains(`${userA.firstName} ${userA.lastName} paid ${userB.firstName} ${userB.lastName}`)
+            .contains(`${users.userA.firstName} ${users.userA.lastName} paid ${users.userB.firstName} ${users.userB.lastName}`)
             .first()
             .click({force: true});
         cy.get(notifications_selectors.like_btn).should('be.visible').click()
@@ -71,7 +55,7 @@ describe('Homework 4.08', () => {
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait('@listTransaction')
         cy.get(transaction_selectors.transaction_list)
-            .contains(`${userA.firstName} ${userA.lastName} paid ${userB.firstName} ${userB.lastName}`)
+            .contains(`${users.userA.firstName} ${users.userA.lastName} paid ${users.userB.firstName} ${users.userB.lastName}`)
             .first()
             .click({force: true});
         cy.get(notifications_selectors.comment_input).type(commentInput + '{enter}')
@@ -82,13 +66,12 @@ describe('Homework 4.08', () => {
     })
 
     it('4. User should be able to accept a transaction request', () => {
-        transaction_selectors.createRequestTransaction(paymentData, userB)
-        cy.ui_logout()
-        cy.ui_login(userB)
+        transaction_selectors.createRequestTransaction(paymentData, users.userB)
+        cy.api_switchUser(users.userB)
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait('@listTransaction')
         cy.get(transaction_selectors.transaction_list)
-            .contains(`${userA.firstName} ${userA.lastName} requested ${userB.firstName} ${userB.lastName}`)
+            .contains(`${users.userA.firstName} ${users.userA.lastName} requested ${users.userB.firstName} ${users.userB.lastName}`)
             .first()
             .click({force: true});
         cy.get(transaction_selectors.accept_request_btn).should('be.visible').click()
@@ -103,13 +86,12 @@ describe('Homework 4.08', () => {
         })
 
     it('5. User should be able to reject a transaction request', () => {
-        transaction_selectors.createRequestTransaction(paymentData, userB)
-        cy.ui_logout()
-        cy.ui_login(userB)
+        transaction_selectors.createRequestTransaction(paymentData, users.userB)
+        cy.api_switchUser(users.userB)
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait('@listTransaction')
         cy.get(transaction_selectors.transaction_list)
-            .contains(`${userA.firstName} ${userA.lastName} requested ${userB.firstName} ${userB.lastName}`)
+            .contains(`${users.userA.firstName} ${users.userA.lastName} requested ${users.userB.firstName} ${users.userB.lastName}`)
             .first()
             .click({force: true});
         cy.get(transaction_selectors.reject_request_btn).should('be.visible').click()
@@ -124,13 +106,12 @@ describe('Homework 4.08', () => {
         })
 
     it('6. Accept/reject buttons shouldnt exist on completed request', () => {
-        transaction_selectors.createRequestTransaction(paymentData, userB)
-        cy.ui_logout()
-        cy.ui_login(userB)
+        transaction_selectors.createRequestTransaction(paymentData, users.userB)
+        cy.api_switchUser(users.userB)
         cy.get(transaction_selectors.mine_btn).click()
         cy.wait('@listTransaction')
         cy.get(transaction_selectors.transaction_list)
-            .contains(`${userA.firstName} ${userA.lastName} requested ${userB.firstName} ${userB.lastName}`)
+            .contains(`${users.userA.firstName} ${users.userA.lastName} requested ${users.userB.firstName} ${users.userB.lastName}`)
             .first()
             .click({force: true});
         cy.get(transaction_selectors.accept_request_btn).should('be.visible').click()

@@ -1,0 +1,26 @@
+{
+  "userA": {
+  "username": "Tavares_Barrows",
+  "password": "s3cret",
+  "firstName": "Arely",
+  "lastName": "Kertzmann",
+  "email": "Aniya_Powlowski36@hotmail.com",
+  "phoneNumber": "537-041-4355"
+},
+  "userB" : {
+  "username": "Jessyca.Kuhic",
+  "password": "s3cret",
+  "firstName": "Devon",
+  "lastName": "Becker",
+  "email": "Jordy37@yahoo.com",
+  "phoneNumber": "277-189-3402"
+},
+"userC": {
+  "firstName": "Kaylin",
+  "lastName": "Homenick",
+  "username": "Allie2",
+  "password": "s3cret",
+  "email": "Rebeca35@yahoo.com",
+  "phoneNumber": "072-208-4283"
+}
+}
