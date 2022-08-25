@@ -1,25 +1,9 @@
 import { home_page_selectors } from "../selectors/home_page_selectors"
 import { transaction_selectors } from "../selectors/transaction_selectors"
+import users from '../fixtures/users.json'
 
 
 describe('homework 26.7', () => {
-    const userInfo = {
-        username: 'Giovanna74',
-        password: 's3cret',
-        firstName: "Ibrahim",
-        lastName: "Dickens",
-        email: "Pearl56@gmail.com",
-        phoneNumber: "974-916-8746",
-    }
-
-    const receiverUserInfo = {
-        username: 'Jessyca.Kuhic',
-        password: 's3cret',
-        firstName: "Devon",
-        lastName: "Becker",
-        email: "Jordy37@yahoo.com",
-        phoneNumber: "277-189-3402",
-    }
 
     const paymentData = {
         amount: 100,
@@ -41,22 +25,22 @@ describe('homework 26.7', () => {
         cy.intercept("GET", "/users/search*").as("usersSearch");
         cy.intercept("GET", "/transactions/*").as("updateTransaction");
         cy.intercept("GET", "/transactions").as("listTransaction")
-        cy.api_login(userInfo);
+        cy.api_login(users.userA);
         cy.get(home_page_selectors.new_transaction_btn).click();
         cy.wait("@getUsers");
 
     })
 
     it('1. Navigates to the new transaction form, selects a user and submits a transaction payment', () => {
-        transaction_selectors.createPaidTransaction(paymentData, receiverUserInfo)
+        transaction_selectors.createPaidTransaction(paymentData, users.userB)
     })
 
     it('2. Navigates to the new transaction form, selects a user and submits a transaction request', () => {
-        transaction_selectors.createRequestTransaction(paymentData, receiverUserInfo)
+        transaction_selectors.createRequestTransaction(paymentData, users.userB)
     })
     
     it('3. Displays new transaction errors', () => {
-        cy.get(transaction_selectors.user_list_item).contains(`${receiverUserInfo.firstName} ${receiverUserInfo.lastName}`).click({force: true})
+        cy.get(transaction_selectors.user_list_item).contains(`${users.userB.firstName} ${users.userB.lastName}`).click({force: true})
         cy.get(transaction_selectors.add_amount_field).click().blur()
         cy.get(transaction_selectors.add_amount_error)
             .should('be.visible')
@@ -71,14 +55,14 @@ describe('homework 26.7', () => {
 
     it('4. submits a transaction payment and verifies the deposit for the receiver', () => {
         let payerStartBalance, receiverStartBalance
-        cy.api_switchUser(receiverUserInfo)
+        cy.api_switchUser(users.userB)
         cy.get(transaction_selectors.user_balance).invoke("text").then(async (x) => {
             x = x.replace(',', '');
             x = x.replace('$', '');
             x = x.replace('.', '');
             receiverStartBalance = x;     
         });
-        cy.api_switchUser(userInfo)
+        cy.api_switchUser(users.userA)
         cy.get(transaction_selectors.user_balance).invoke("text").then((x) => {
             x = x.replace(',', '');
             x = x.replace('$', '')
@@ -87,7 +71,7 @@ describe('homework 26.7', () => {
         });
         cy.get(home_page_selectors.new_transaction_btn).click();
         cy.wait("@getUsers");
-        transaction_selectors.createPaidTransaction(paymentData, receiverUserInfo);
+        transaction_selectors.createPaidTransaction(paymentData, users.userB);
         cy.get(transaction_selectors.user_balance).invoke("text").then((x) => {
             x = x.replace(',', '');
             x = x.replace('$', '');
@@ -95,7 +79,7 @@ describe('homework 26.7', () => {
             let updatedBalance = Number(payerStartBalance) - paymentData.amount * 100;
             expect(x).to.equal(updatedBalance.toString());
         });
-        cy.api_switchUser(receiverUserInfo)
+        cy.api_switchUser(users.userB)
         cy.get(transaction_selectors.user_balance).invoke("text").then((x) => {
             x = x.replace(',', '');
             x = x.replace('$', '');
@@ -114,8 +98,8 @@ describe('homework 26.7', () => {
             payerStartBalance = x;     
         });
         cy.get(home_page_selectors.new_transaction_btn).click();
-        transaction_selectors.createRequestTransaction(paymentData, receiverUserInfo)
-        cy.api_switchUser(receiverUserInfo)
+        transaction_selectors.createRequestTransaction(paymentData, users.userB)
+        cy.api_switchUser(users.userB)
         cy.get(transaction_selectors.mine_btn).should('be.visible').click()
         cy.wait("@listTransaction")
         cy.get(transaction_selectors.transaction_list)
@@ -124,7 +108,7 @@ describe('homework 26.7', () => {
             .first()
             .click()
         cy.get(transaction_selectors.accept_request_btn).should('be.visible').click()
-        cy.api_switchUser(userInfo)
+        cy.api_switchUser(users.userA)
         cy.get(transaction_selectors.user_balance).invoke("text").then((x) => {
             x = x.replace(',', '');
             x = x.replace('$', '');
@@ -137,7 +121,7 @@ describe('homework 26.7', () => {
     context ("6. searches for a user by attribute", () => {
         searchAttrs.forEach((attr) => {
             it(`Searches for a user by "${attr}" attribute`, () => {
-            cy.get(transaction_selectors.search_input).type(receiverUserInfo[attr], {force: true});
+            cy.get(transaction_selectors.search_input).type(users.userB[attr], {force: true});
             cy.wait("@usersSearch")
                 .its("response.body.results")
                 .should("have.length.gt", 0)
@@ -146,7 +130,7 @@ describe('homework 26.7', () => {
                   cy.get(transaction_selectors.user_list_item)
                     .should("have.length", resultsN)
                     .first()
-                    .contains(receiverUserInfo[attr]);
+                    .contains(users.userB[attr]);
                 });
             cy.focused().clear();
             cy.get(transaction_selectors.search_input).should("be.empty");

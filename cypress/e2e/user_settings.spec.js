@@ -1,44 +1,23 @@
 import { user_settings_selectors } from "../selectors/user_settings_selectors";
+import users from '../fixtures/users.json'
 
 describe('Homework 9.08', () => {
-    const userA = {
-        username: 'Tavares_Barrows',
-        password: 's3cret',
-        firstName: "Arely",
-        lastName: "Kertzmann",
-        email: "Aniya_Powlowski36@hotmail.com",
-        phoneNumber: "537-041-4355",
-    }
-
-    const userB = {
-        firstName: "Lionel",
-        lastName: "Messi",
-        email: "lionel_messi@mailinator.com",
-        phoneNumber: "333-222-1111",
-    }
-
-    const userC = {
-        firstName: "Timo",
-        lastName: "Werner",
-        email: "timo_werner@mailinator.com",
-        phoneNumber: "444-444-2222",
-    }
 
     beforeEach('Log in and procced to settings page + incercept', () => {
         cy.intercept("PATCH", "/users/*").as("updateUser");
         cy.intercept("GET", "/checkAuth",req => {
             delete req.headers['if-none-match']
           }).as("userProfile");
-        cy.api_login(userA);
+        cy.api_login(users.userA);
         cy.get(user_settings_selectors.my_account_btn).click()
         cy.url().should("contain", "/user/settings");
     })
 
     after('Return to default userInfo', () => {
-        cy.get(user_settings_selectors.firstName_input).clear().type(userA.firstName);
-        cy.get(user_settings_selectors.lastName_input).clear().type(userA.lastName);
-        cy.get(user_settings_selectors.email_input).clear().type(userA.email);
-        cy.get(user_settings_selectors.phone_input).clear().type(userA.phoneNumber);
+        cy.get(user_settings_selectors.firstName_input).clear().type(users.userA.firstName);
+        cy.get(user_settings_selectors.lastName_input).clear().type(users.userA.lastName);
+        cy.get(user_settings_selectors.email_input).clear().type(users.userA.email);
+        cy.get(user_settings_selectors.phone_input).clear().type(users.userA.phoneNumber);
         cy.get(user_settings_selectors.save_btn).click()
     })
 
@@ -79,62 +58,62 @@ describe('Homework 9.08', () => {
     })
 
     it('3. User should be able to update all settings in once', () => {
-        cy.get(user_settings_selectors.firstName_input).clear().type(userB.firstName);
-        cy.get(user_settings_selectors.lastName_input).clear().type(userB.lastName);
-        cy.get(user_settings_selectors.email_input).clear().type(userB.email);
-        cy.get(user_settings_selectors.phone_input).clear().type(userB.phoneNumber);
+        cy.get(user_settings_selectors.firstName_input).clear().type(users.userB.firstName);
+        cy.get(user_settings_selectors.lastName_input).clear().type(users.userB.lastName);
+        cy.get(user_settings_selectors.email_input).clear().type(users.userB.email);
+        cy.get(user_settings_selectors.phone_input).clear().type(users.userB.phoneNumber);
         cy.get(user_settings_selectors.save_btn).click()
         cy.wait("@userProfile").its('response').then((response) => {
-            expect(response.body.user.firstName).to.eq(userB.firstName);
-            expect(response.body.user.lastName).to.eq(userB.lastName);
-            expect(response.body.user.email).to.eq(userB.email);
-            expect(response.body.user.phoneNumber).to.eq(userB.phoneNumber);
+            expect(response.body.user.firstName).to.eq(users.userB.firstName);
+            expect(response.body.user.lastName).to.eq(users.userB.lastName);
+            expect(response.body.user.email).to.eq(users.userB.email);
+            expect(response.body.user.phoneNumber).to.eq(users.userB.phoneNumber);
         })
         cy.reload()
-        cy.get(user_settings_selectors.firstName_input).should('have.value',(userB.firstName));
-        cy.get(user_settings_selectors.lastName_input).should('have.value',(userB.lastName));
-        cy.get(user_settings_selectors.email_input).should('have.value',(userB.email));
-        cy.get(user_settings_selectors.phone_input).should('have.value',(userB.phoneNumber));
+        cy.get(user_settings_selectors.firstName_input).should('have.value',(users.userB.firstName));
+        cy.get(user_settings_selectors.lastName_input).should('have.value',(users.userB.lastName));
+        cy.get(user_settings_selectors.email_input).should('have.value',(users.userB.email));
+        cy.get(user_settings_selectors.phone_input).should('have.value',(users.userB.phoneNumber));
     })
 
     it('4. User should be able to update first name', () => {
-        cy.get(user_settings_selectors.firstName_input).clear().type(userC.firstName);
+        cy.get(user_settings_selectors.firstName_input).clear().type(users.userC.firstName);
         cy.get(user_settings_selectors.save_btn).click()
         cy.wait("@userProfile").its('response').then((response) => {
-            expect(response.body.user.firstName).to.eq(userC.firstName);
+            expect(response.body.user.firstName).to.eq(users.userC.firstName);
         })
         cy.reload()
-        cy.get(user_settings_selectors.firstName_input).should('have.value',(userC.firstName));
+        cy.get(user_settings_selectors.firstName_input).should('have.value',(users.userC.firstName));
     })
 
     it('5. User should be able to update last name', () => {
-        cy.get(user_settings_selectors.lastName_input).clear().type(userC.lastName);
+        cy.get(user_settings_selectors.lastName_input).clear().type(users.userC.lastName);
         cy.get(user_settings_selectors.save_btn).click()
         cy.wait("@userProfile").its('response').then((response) => {
-            expect(response.body.user.lastName).to.eq(userC.lastName);
+            expect(response.body.user.lastName).to.eq(users.userC.lastName);
         })
         cy.reload()
-        cy.get(user_settings_selectors.lastName_input).should('have.value',(userC.lastName));
+        cy.get(user_settings_selectors.lastName_input).should('have.value',(users.userC.lastName));
     })
 
     it('6. User should be able to update email', () => {
-        cy.get(user_settings_selectors.email_input).clear().type(userC.email);
+        cy.get(user_settings_selectors.email_input).clear().type(users.userC.email);
         cy.get(user_settings_selectors.save_btn).click()
         cy.wait("@userProfile").its('response').then((response) => {
-            expect(response.body.user.email).to.eq(userC.email);
+            expect(response.body.user.email).to.eq(users.userC.email);
         })
         cy.reload()
-        cy.get(user_settings_selectors.email_input).should('have.value',(userC.email));
+        cy.get(user_settings_selectors.email_input).should('have.value',(users.userC.email));
     })
 
     it('7. User should be able to update phone number', () => {
-        cy.get(user_settings_selectors.phone_input).clear().type(userC.phoneNumber);
+        cy.get(user_settings_selectors.phone_input).clear().type(users.userC.phoneNumber);
         cy.get(user_settings_selectors.save_btn).click()
         cy.wait("@userProfile").its('response').then((response) => {
-            expect(response.body.user.phoneNumber).to.eq(userC.phoneNumber);
+            expect(response.body.user.phoneNumber).to.eq(users.userC.phoneNumber);
         })
         cy.reload()
-        cy.get(user_settings_selectors.phone_input).should('have.value',(userC.phoneNumber));
+        cy.get(user_settings_selectors.phone_input).should('have.value',(users.userC.phoneNumber));
     })
 
 })
