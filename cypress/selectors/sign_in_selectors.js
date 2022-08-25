@@ -7,5 +7,7 @@ export const sign_in_selectors = {
     remember_me_checkbox: '[name="remember"]',
     signin_btn:'[data-test="signin-submit"]',
     signup_link: '[data-test="signup"]',
-    license: '[href=\'https://cypress.io\']'
+    license: '[href=\'https://cypress.io\']',
+    signin_error: '[data-test="signin-error"]',
+    password_char_error: '#password-helper-text'
 }

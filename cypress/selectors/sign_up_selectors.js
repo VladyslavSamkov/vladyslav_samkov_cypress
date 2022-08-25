@@ -5,9 +5,9 @@ export const sign_up_selectors = {
     password: '#password',
     confirmPassword: '#confirmPassword',
     sign_up_btn: '[data-test="signup-submit"]',
-    generateUserName() {
-        const n1 = ["Blue ", "Green", "Red", "Orange", "Violet", "Indigo", "Yellow "];
-        const n2 = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Zero"]
-        return n1[parseInt(Math.random() * n1.length)] + '-' + n2[parseInt(Math.random() * n2.length)];
-    }
+    firstname_error: '#firstName-helper-text',
+    lastName_error: '#lastName-helper-text',
+    userName_error: '#username-helper-text',
+    password_error: '#password-helper-text',
+    confirmPassword_error: '#confirmPassword-helper-text'
 }
