@@ -7,8 +7,8 @@ module.exports = defineConfig({
       numTestsKeptInMemory: 50,
       specPattern: 'cypress/e2e/**/*.spec.{js,jsx,ts,tsx}',
       retries: {
-        runMode: 2,
-        openMode: 1,
+        runMode: 1,
+        openMode: 0,
       },
     setupNodeEvents(on, config) {
       // implement node event listeners here
