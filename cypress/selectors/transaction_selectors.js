@@ -14,11 +14,13 @@ export const transaction_selectors = {
     mine_btn: '[data-test="nav-personal-tab"]',
     transaction_list: '[data-test="transaction-list"]',
     accept_request_btn: '[data-test*="transaction-accept-request"]',
+    reject_request_btn: '[data-test*="transaction-reject-request"]',
     search_input: '[data-test="user-list-search-input"]',
     new_transaction_btn: '[data-test="nav-top-new-transaction"]',
-    createPaidTransaction(paymentData, userInfo) {
+    transaction_tabs: '[data-test="nav-transaction-tabs"]',
+    createPaidTransaction(paymentData, receiverUserInfo) {
         cy.get(transaction_selectors.new_transaction_btn).click();
-        cy.get(transaction_selectors.user_list_item).contains(`${userInfo.firstName} ${userInfo.lastName}`).click()
+        cy.get(transaction_selectors.user_list_item).contains(`${receiverUserInfo.firstName} ${receiverUserInfo.lastName}`).click({force: true})
         cy.get(transaction_selectors.add_amount_field).should('be.visible').type(paymentData.amount),
         cy.get(transaction_selectors.add_a_note_field).should('be.visible').type(paymentData.note),
         cy.get(transaction_selectors.pay_btn).should('be.visible').click()
