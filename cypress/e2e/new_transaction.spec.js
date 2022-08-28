@@ -55,14 +55,14 @@ describe('homework 26.7', () => {
 
     it('4. submits a transaction payment and verifies the deposit for the receiver', () => {
         let payerStartBalance, receiverStartBalance
-        cy.api_switchUser(users.userB)
+        cy.api_switchUser(users.userA)
         cy.get(transaction_selectors.user_balance).invoke("text").then(async (x) => {
             x = x.replace(',', '');
             x = x.replace('$', '');
             x = x.replace('.', '');
             receiverStartBalance = x;     
         });
-        cy.api_switchUser(users.userA)
+        cy.api_switchUser(users.userB)
         cy.get(transaction_selectors.user_balance).invoke("text").then((x) => {
             x = x.replace(',', '');
             x = x.replace('$', '')
@@ -71,7 +71,7 @@ describe('homework 26.7', () => {
         });
         cy.get(home_page_selectors.new_transaction_btn).click();
         cy.wait("@getUsers");
-        transaction_selectors.createPaidTransaction(paymentData, users.userB);
+        transaction_selectors.createPaidTransaction(paymentData, users.userA);
         cy.get(transaction_selectors.user_balance).invoke("text").then((x) => {
             x = x.replace(',', '');
             x = x.replace('$', '');
@@ -79,7 +79,7 @@ describe('homework 26.7', () => {
             let updatedBalance = Number(payerStartBalance) - paymentData.amount * 100;
             expect(x).to.equal(updatedBalance.toString());
         });
-        cy.api_switchUser(users.userB)
+        cy.api_switchUser(users.userA)
         cy.get(transaction_selectors.user_balance).invoke("text").then((x) => {
             x = x.replace(',', '');
             x = x.replace('$', '');
@@ -104,7 +104,7 @@ describe('homework 26.7', () => {
         cy.wait("@listTransaction")
         cy.get(transaction_selectors.transaction_list)
             .children()
-            .should('contain',paymentData.note)
+            .should('contain',`${users.userA.firstName} ${users.userA.lastName} requested ${users.userB.firstName} ${users.userB.lastName}`)
             .first()
             .click()
         cy.get(transaction_selectors.accept_request_btn).should('be.visible').click()

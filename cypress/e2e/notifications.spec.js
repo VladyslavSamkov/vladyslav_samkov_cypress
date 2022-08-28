@@ -6,10 +6,9 @@ import users from '../fixtures/users.json'
 describe('homework №5 02.05', () => {
 
     const paymentData = {
-        amount: 100,
-        note: 'For Porche 911'
+        amount: 400,
+        note: 'Miroslav Klose'
     }
-
 
     const commentInput = 'Expecto Patronum'
 
@@ -49,10 +48,9 @@ describe('homework №5 02.05', () => {
     it('2. When user C likes a transaction between user A and user B, user A and user B should get notifications that user C liked transaction', () => {
         transaction_selectors.createPaidTransaction(paymentData, users.userB);
         cy.api_switchUser(users.userC)
-        cy.get(transaction_selectors.transaction_list)
-            .contains(`${users.userA.firstName} ${users.userA.lastName} paid ${users.userB.firstName} ${users.userB.lastName}`)
-            .first()
-            .click({force: true});
+        cy.get('@transactionId').then((transactionId) => {
+            cy.visit(`/transaction/${transactionId}`);
+        })
         cy.get(notifications_selectors.like_btn).should('be.visible').click()
         cy.get(notifications_selectors.like_count).should('be.visible').and('have.text','1 ')
         cy.api_switchUser(users.userA)
@@ -100,10 +98,9 @@ describe('homework №5 02.05', () => {
     it('4. When user C comments on a transaction between user A and user B, user A and B should get notifications that user C commented on their transaction', () => {
         transaction_selectors.createPaidTransaction(paymentData, users.userB);
         cy.api_switchUser(users.userC)
-        cy.get(transaction_selectors.transaction_list)
-            .contains(`${users.userA.firstName} ${users.userA.lastName} paid ${users.userB.firstName} ${users.userB.lastName}`)
-            .first()
-            .click({force: true});
+        cy.get('@transactionId').then((transactionId) => {
+            cy.visit(`/transaction/${transactionId}`);
+        })
         cy.get(notifications_selectors.comment_input).type(commentInput).type('{enter}')
         cy.wait("@postComment");
         cy.get(notifications_selectors.comment_list)
