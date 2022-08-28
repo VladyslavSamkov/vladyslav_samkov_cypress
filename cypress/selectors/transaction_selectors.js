@@ -29,6 +29,7 @@ export const transaction_selectors = {
             expect(response.body.transaction.amount).to.eq(paymentData.amount * 100);
             expect(response.body.transaction.description).to.eq(paymentData.note);
             expect(response.body.transaction.status).to.eq('complete');
+            cy.wrap(response.body.transaction.id).as('transactionId') 
             })
         cy.wait("@checkAuth")
         cy.get(transaction_selectors.success_alert)
@@ -47,6 +48,7 @@ export const transaction_selectors = {
             expect(response.body.transaction.amount).to.eq(paymentData.amount * 100)
             expect(response.body.transaction.description).to.eq(paymentData.note)
             expect(response.body.transaction.status).to.eq('pending')
+            cy.wrap(response.body.transaction.id).as('transactionId') 
             })
         cy.wait("@checkAuth")
         cy.get(transaction_selectors.success_alert)
